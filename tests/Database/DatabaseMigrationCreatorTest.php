@@ -39,6 +39,17 @@ class DatabaseMigrationCreatorTest extends PHPUnit_Framework_TestCase {
 	}
 
 
+    public function testTableUpdateMigrationStoresMigrationFileWithCapsule()
+    {
+        $creator = $this->getCreator(true);
+        $creator->expects($this->any())->method('getDatePrefix')->will($this->returnValue('foo'));
+        $creator->getFilesystem()->shouldReceive('get')->once()->with($creator->getStubPath().'/update_capsule.stub')->andReturn('{{class}} {{table}}');
+        $creator->getFilesystem()->shouldReceive('put')->once()->with('foo/foo_create_bar.php', 'CreateBar baz');
+
+        $creator->create('create_bar', 'foo', 'baz');
+    }
+
+
 	public function testTableCreationMigrationStoresMigrationFile()
 	{
 		$creator = $this->getCreator();
@@ -50,11 +61,22 @@ class DatabaseMigrationCreatorTest extends PHPUnit_Framework_TestCase {
 	}
 
 
-	protected function getCreator()
+    public function testTableCreationMigrationStoresMigrationFileWithCapsule()
+    {
+        $creator = $this->getCreator(true);
+        $creator->expects($this->any())->method('getDatePrefix')->will($this->returnValue('foo'));
+        $creator->getFilesystem()->shouldReceive('get')->once()->with($creator->getStubPath().'/create_capsule.stub')->andReturn('{{class}} {{table}}');
+        $creator->getFilesystem()->shouldReceive('put')->once()->with('foo/foo_create_bar.php', 'CreateBar baz');
+
+        $creator->create('create_bar', 'foo', 'baz', true);
+    }
+
+
+	protected function getCreator($capsule = false)
 	{
 		$files = m::mock('Illuminate\Filesystem\Filesystem');
 
-		return $this->getMock('Illuminate\Database\Migrations\MigrationCreator', array('getDatePrefix'), array($files));
+		return $this->getMock('Illuminate\Database\Migrations\MigrationCreator', array('getDatePrefix'), array($files, $capsule));
 	}
 
 }

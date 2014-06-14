@@ -19,15 +19,39 @@ class MigrationCreator {
 	 */
 	protected $postCreate = array();
 
+    /**
+     * The file to use when creating a create migration.
+     *
+     * @var string
+     */
+    protected $createStub;
+
+    /**
+     * The file to use when creating an update migration.
+     *
+     * @var string
+     */
+    protected $updateStub;
+
 	/**
 	 * Create a new migration creator instance.
 	 *
 	 * @param  \Illuminate\Filesystem\Filesystem  $files
+     * @param  boolean  $isCapsule
 	 * @return void
 	 */
-	public function __construct(Filesystem $files)
+	public function __construct(Filesystem $files, $isCapsule = false)
 	{
 		$this->files = $files;
+
+        if ($isCapsule) {
+            $this->createStub = "create_capsule.stub";
+            $this->updateStub = "update_capsule.stub";
+
+        } else {
+            $this->createStub = "create.stub";
+            $this->updateStub = "update.stub";
+        }
 	}
 
 	/**
@@ -73,7 +97,7 @@ class MigrationCreator {
 		// or modifying existing tables. We'll grab the appropriate stub here.
 		else
 		{
-			$stub = $create ? 'create.stub' : 'update.stub';
+			$stub = $create ? $this->createStub : $this->updateStub;
 
 			return $this->files->get($this->getStubPath()."/{$stub}");
 		}
