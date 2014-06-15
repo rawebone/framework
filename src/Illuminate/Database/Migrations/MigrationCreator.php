@@ -19,19 +19,19 @@ class MigrationCreator {
 	 */
 	protected $postCreate = array();
 
-    /**
-     * The file to use when creating a create migration.
-     *
-     * @var string
-     */
-    protected $createStub;
+	/**
+	 * The file to use when creating a create migration.
+	 *
+	 * @var string
+	 */
+	protected $createStub;
 
-    /**
-     * The file to use when creating an update migration.
-     *
-     * @var string
-     */
-    protected $updateStub;
+	/**
+	 * The file to use when creating an update migration.
+	 *
+	 * @var string
+	 */
+	protected $updateStub;
 
 	/**
 	 * Create a new migration creator instance.
@@ -44,14 +44,14 @@ class MigrationCreator {
 	{
 		$this->files = $files;
 
-        if ($isCapsule) {
-            $this->createStub = "create_capsule.stub";
-            $this->updateStub = "update_capsule.stub";
+		if ($isCapsule) {
+			$this->createStub = "create_capsule.stub";
+			$this->updateStub = "update_capsule.stub";
 
-        } else {
-            $this->createStub = "create.stub";
-            $this->updateStub = "update.stub";
-        }
+		} else {
+			$this->createStub = "create.stub";
+			$this->updateStub = "update.stub";
+		}
 	}
 
 	/**
