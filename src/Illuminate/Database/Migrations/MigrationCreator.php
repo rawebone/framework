@@ -37,7 +37,7 @@ class MigrationCreator {
 	 * Create a new migration creator instance.
 	 *
 	 * @param  \Illuminate\Filesystem\Filesystem  $files
-     * @param  boolean  $isCapsule
+	 * @param  boolean  $isCapsule
 	 * @return void
 	 */
 	public function __construct(Filesystem $files, $isCapsule = false)
